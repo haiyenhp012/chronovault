@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #050509;
+  color: #e6e8f0;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  min-height: 100vh;
+  position: relative;
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* ---------- Backdrop layers ---------- */
+
+/* Fine grid that fades toward the edges */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(124, 108, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(124, 108, 255, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 40%, transparent 100%);
+}
+
+/* Animated aurora orbs */
+.aurora {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: -2;
+  pointer-events: none;
+}
+.aurora span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(130px);
+  opacity: 0.5;
+}
+.aurora span:nth-child(1) {
+  width: 55vw;
+  height: 55vw;
+  background: radial-gradient(circle, #6c5cff 0%, transparent 70%);
+  top: -18vw;
+  left: -8vw;
+  animation: drift1 26s ease-in-out infinite;
+}
+.aurora span:nth-child(2) {
+  width: 48vw;
+  height: 48vw;
+  background: radial-gradient(circle, #1fd6c5 0%, transparent 70%);
+  bottom: -22vw;
+  right: -8vw;
+  animation: drift2 30s ease-in-out infinite;
+}
+.aurora span:nth-child(3) {
+  width: 34vw;
+  height: 34vw;
+  background: radial-gradient(circle, #c061ff 0%, transparent 70%);
+  top: 30%;
+  left: 55%;
+  opacity: 0.28;
+  animation: drift3 34s ease-in-out infinite;
+}
+@keyframes drift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(5vw, 4vw) scale(1.15); }
+}
+@keyframes drift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-4vw, -3vw) scale(1.1); }
+}
+@keyframes drift3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-6vw, 5vw) scale(1.2); }
+}
+
+/* Subtle film grain to kill banding on the blurs */
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Surfaces ---------- */
+
+.glass {
+  position: relative;
+  background: linear-gradient(180deg, rgba(26, 26, 46, 0.55) 0%, rgba(16, 16, 30, 0.5) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Gradient hairline along the top edge of a card */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, rgba(124, 108, 255, 0.6), rgba(31, 214, 197, 0.6), transparent);
+  opacity: 0.7;
+}
+
+.glass-hover {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.glass-hover:hover {
+  transform: translateY(-3px);
+  border-color: rgba(124, 108, 255, 0.35);
+  box-shadow: 0 20px 50px -18px rgba(108, 92, 255, 0.5);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #a99dff 0%, #3ee0d0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn-primary {
+  position: relative;
+  background: linear-gradient(135deg, #6c5cff 0%, #1fd6c5 100%);
+  background-size: 160% 160%;
+  background-position: 0% 50%;
+  transition: background-position 0.5s ease, filter 0.2s ease, transform 0.08s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 24px -10px rgba(108, 92, 255, 0.7);
+}
+.btn-primary:hover:not(:disabled) {
+  background-position: 100% 50%;
+  filter: brightness(1.08);
+  box-shadow: 0 12px 32px -10px rgba(108, 92, 255, 0.85);
+}
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.985);
+}
+.btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-ghost {
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* ---------- Progress shimmer ---------- */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: translateX(-100%);
+  animation: sweep 2.2s infinite;
+}
+@keyframes sweep {
+  100% { transform: translateX(100%); }
+}
+
+/* Skeleton shimmer for loading states */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 37%, rgba(255,255,255,0.04) 63%);
+  background-size: 400% 100%;
+  animation: skeleton 1.4s ease infinite;
+}
+@keyframes skeleton {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* Soft pulse for "live" dots */
+.pulse-dot {
+  position: relative;
+}
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes ping {
+  75%, 100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(124, 108, 255, 0.3);
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 108, 255, 0.5);
+  background-clip: padding-box;
+}
+
+::selection {
+  background: rgba(124, 108, 255, 0.35);
+  color: #fff;
+}

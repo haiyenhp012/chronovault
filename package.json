@@ -1,0 +1,19 @@
+{
+  "name": "chronovault",
+  "version": "1.0.0",
+  "description": "ChronoVault - token & LP time-lock and vesting with tradable NFT positions on OPN Chain",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.js --network opnTestnet"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/merkle-tree": "^1.0.8",
+    "hardhat": "^2.22.17"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "dotenv": "^16.4.7"
+  }
+}

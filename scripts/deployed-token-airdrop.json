@@ -1,0 +1,8 @@
+{
+  "chainId": 984,
+  "token": "0xEE6e1d3d38893bD7f3Ecd1C30cE3efF436964419",
+  "airdrop": "0xF1318A8cae58311E8F5408CC45DbaB956C149863",
+  "merkleRoot": "0x743545c3ddd65e31fb342ed0d1ed019e4a94068db052f63fd3501f5ff0a7efc2",
+  "initialSupply": "1000000000000000000000000",
+  "airdropFunded": "7500000000000000000000"
+}
