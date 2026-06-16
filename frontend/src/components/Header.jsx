@@ -62,22 +62,7 @@ export function Header({ wallet }) {
             >
               Install wallet
             </a>
-          ) : wrongNetwork ? (
-            <button
-              onClick={switchNetwork}
-              className="btn-primary rounded-xl px-4 py-2 text-sm font-semibold text-white"
-            >
-              Switch to OPN
-            </button>
-          ) : address ? (
-            <button
-              onClick={copyAddr}
-              className="group flex items-center gap-2 rounded-xl border border-chrono-400/30 bg-chrono-500/10 px-4 py-2 font-mono text-sm text-chrono-300 transition hover:border-chrono-400/50 hover:bg-chrono-500/15"
-            >
-              <span className="h-2 w-2 rounded-full bg-chrono-400" />
-              {copied ? "Copied!" : short(address)}
-            </button>
-          ) : (
+          ) : !address ? (
             <button
               onClick={connect}
               disabled={connecting}
@@ -87,6 +72,21 @@ export function Header({ wallet }) {
                 <span className="h-3.5 w-3.5 animate-spin-slow rounded-full border-2 border-white/30 border-t-white" />
               )}
               {connecting ? "Connecting…" : "Connect wallet"}
+            </button>
+          ) : wrongNetwork ? (
+            <button
+              onClick={switchNetwork}
+              className="btn-primary rounded-xl px-4 py-2 text-sm font-semibold text-white"
+            >
+              Switch to OPN
+            </button>
+          ) : (
+            <button
+              onClick={copyAddr}
+              className="group flex items-center gap-2 rounded-xl border border-chrono-400/30 bg-chrono-500/10 px-4 py-2 font-mono text-sm text-chrono-300 transition hover:border-chrono-400/50 hover:bg-chrono-500/15"
+            >
+              <span className="h-2 w-2 rounded-full bg-chrono-400" />
+              {copied ? "Copied!" : short(address)}
             </button>
           )}
         </div>
