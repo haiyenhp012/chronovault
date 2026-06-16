@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CHAIN } from "../config";
 
 function short(addr) {
@@ -6,8 +6,19 @@ function short(addr) {
 }
 
 export function Header({ wallet }) {
-  const { address, connecting, hasWallet, wrongNetwork, connect, switchNetwork } = wallet;
+  const { address, connecting, hasWallet, wrongNetwork, connect, disconnect, switchNetwork } = wallet;
   const [copied, setCopied] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    function onClick(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false);
+    }
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [menuOpen]);
 
   async function copyAddr() {
     try {
@@ -81,13 +92,38 @@ export function Header({ wallet }) {
               Switch to OPN
             </button>
           ) : (
-            <button
-              onClick={copyAddr}
-              className="group flex items-center gap-2 rounded-xl border border-chrono-400/30 bg-chrono-500/10 px-4 py-2 font-mono text-sm text-chrono-300 transition hover:border-chrono-400/50 hover:bg-chrono-500/15"
-            >
-              <span className="h-2 w-2 rounded-full bg-chrono-400" />
-              {copied ? "Copied!" : short(address)}
-            </button>
+            <div className="relative" ref={menuRef}>
+              <button
+                onClick={() => setMenuOpen((o) => !o)}
+                className="group flex items-center gap-2 rounded-xl border border-chrono-400/30 bg-chrono-500/10 px-4 py-2 font-mono text-sm text-chrono-300 transition hover:border-chrono-400/50 hover:bg-chrono-500/15"
+              >
+                <span className="h-2 w-2 rounded-full bg-chrono-400" />
+                {short(address)}
+                <span className={`text-[10px] transition-transform ${menuOpen ? "rotate-180" : ""}`}>▾</span>
+              </button>
+              {menuOpen && (
+                <div className="absolute right-0 mt-2 w-44 overflow-hidden rounded-xl border border-white/10 bg-ink-950/95 py-1 shadow-xl backdrop-blur-xl">
+                  <button
+                    onClick={() => {
+                      copyAddr();
+                      setMenuOpen(false);
+                    }}
+                    className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-slate-300 transition hover:bg-white/5 hover:text-white"
+                  >
+                    {copied ? "Copied!" : "Copy address"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      disconnect();
+                      setMenuOpen(false);
+                    }}
+                    className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-rose-400 transition hover:bg-rose-500/10 hover:text-rose-300"
+                  >
+                    Disconnect
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

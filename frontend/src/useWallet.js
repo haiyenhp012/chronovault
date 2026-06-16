@@ -62,6 +62,13 @@ export function useWallet() {
     await refresh();
   }, [refresh]);
 
+  const disconnect = useCallback(() => {
+    // EIP-1193 has no programmatic revoke; we just forget local state.
+    // The user re-authorizes via connect() next time.
+    setAddress(null);
+    setProvider(null);
+  }, []);
+
   useEffect(() => {
     if (!window.ethereum) return;
     refresh();
@@ -83,6 +90,7 @@ export function useWallet() {
     hasWallet,
     wrongNetwork,
     connect,
+    disconnect,
     switchNetwork,
     refresh,
   };
